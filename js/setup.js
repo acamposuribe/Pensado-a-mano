@@ -41,19 +41,36 @@ function setup () {
             polygons.push(new Polygon([[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)]]))
         }
 
+        /*
         for (let p of polygons) {
             let angle = random(0,180)
             if (random() < 0.3) {
-                let h = new Hatch(random(15,40),angle,p,true)
-                h.isolate(gridLines,pickedColors[int(random(2,8))],1);
+                p.hatch("around",random(15,40),angle,gridLines,pickedColors[int(random(2,8))],1)
             } else {
-                let h = new Hatch(random(15,40),angle,p,true)
-                h.hatch(gridLines,pickedColors[int(random(2,8))],1);
+                p.hatch("inside",random(15,40),angle,gridLines,pickedColors[int(random(2,8))],1)
             }
         }
+        */
 
-        //hatch = new Hatch(10,random(0,180),polygons,true)
-        //hatch.rainbowHatch(gridLines);
+        test_plot = new Plot("curve")
+        test_plot.addSegment(0,300,1)
+        test_plot.addSegment(90,300,1)
+        test_plot.addSegment(180,300,1)
+        test_plot.addSegment(270,300,1)
+        test_plot.endPlot(360)
+
+        //gridLines.plot(test_plot,1000,1000,2,pickedColors[int(random(2,8))],1)
+
+        //test_plot.genPol(1000,1000,2).hatch("around",random(15,30),random(0,180),gridLines,pickedColors[int(random(2,8))],1)
+        //test_plot.genPol(1500,1500,3).hatch("around",random(15,30),random(0,180),gridLines,pickedColors[int(random(2,8))],1)
+
+        let polygons2 = [];
+        for (let i = 0; i < 5; i++) {
+            polygons2.push(test_plot.genPol(random(w1,w2),random(h1,h2),random(1,3)))
+        }
+
+        hatch = new Hatch(10,random(0,180),polygons2,true)
+        hatch.rainbowHatch(gridLines);
 }
 
 let l; // loading phases
@@ -64,145 +81,17 @@ function draw () {
 
     loaded = 4;
     
+    
     if (firefoxAgent) {
         canvas_texture.image(lienzo,0,0);
     }
 
-    frameRate(20)
+    frameRate(10)
     noLoop();
 }
 
 function mouseClicked() {
     noLoop();
-}
-
-function punto (x,y) {
-    return {x:x,y:y}
-}
-
-class Hatch {
-    constructor (dist, angle, polygons, full = true) {
-        this.dots = []
-
-        if (full) {
-            if (Array.isArray(polygons)) {
-                polygons.push(new Polygon([[w1,h1],[w2,h1],[w2,h2],[w1,h2]]))
-            } else {
-                polygons = [polygons]
-                polygons.push(new Polygon([[w1,h1],[w2,h1],[w2,h2],[w1,h2]]))
-            }
-        }
-
-        this.empiezax = w1
-        if (angle <= 90 && angle >= 0) {this.empiezay = h1} else {this.empiezay = h2}
-
-        let boundary = {w1: w1,w2: w2,h1: h1,h2: h2,}
-        let ventana = new Polygon([[w1,h1],[w2,h1],[w2,h2],[w1,h2]])
-        let i = 0;
-        let linea = {
-            point1 : {x: this.empiezax,               y:this.empiezay},
-            point2 : {x: this.empiezax+1*cos(-angle), y:this.empiezay+1*sin(-angle)}
-        }
-        while (ventana.intersect(linea).length > 0) {            
-            let tempArray = [];
-            if (Array.isArray(polygons)) {
-                for (let p of polygons) {
-                    tempArray.push(p.intersect(linea,boundary))
-                }
-            } else {
-                tempArray.push(polygons.intersect(linea,boundary))
-            }            
-            this.dots[i] = []
-            tempArray = tempArray.flat();
-            tempArray.sort(function(a,b) {
-                if( a.x == b.x) return a.y-b.y;
-                return a.x-b.x;
-            });
-            this.dots[i] = this.dots[i].concat(tempArray)
-            i++
-            linea = {
-                point1 : {x: this.empiezax+dist*i*cos(-angle+90),               y:this.empiezay+dist*i*sin(-angle+90)},
-                point2 : {x: this.empiezax+dist*i*cos(-angle+90)+1*cos(-angle), y:this.empiezay+dist*i*sin(-angle+90)+1*sin(-angle)}
-            }
-        }
-    }
-    rainbowHath (brush) {
-        for (let dd of this.dots) {
-            let index = 2;
-            for (let i = 0; i < dd.length-1; i++) {
-                    brush.line(dd[i].x,dd[i].y,dd[i+1].x,dd[i+1].y,pickedColors[index],1,"straight")
-                index++;
-                if (index == 8) {
-                    index = 2;
-                }
-            }
-        }
-    }
-    hatch (brush,color,weight) {
-        for (let dd of this.dots) {
-            for (let i = 0; i < dd.length-1; i++) {
-                if (i % 2 == 1) {
-                    brush.line(dd[i].x,dd[i].y,dd[i+1].x,dd[i+1].y,color,weight,"straight")
-                }
-            }
-        }
-    }
-    isolate (brush, color, weight) {
-        for (let dd of this.dots) {
-            for (let i = 0; i < dd.length-1; i++) {
-                if (i % 2 == 0) {
-                    brush.line(dd[i].x,dd[i].y,dd[i+1].x,dd[i+1].y,color,weight,"straight")
-                }
-            }
-        }
-    }
-}
-
-class Polygon {
-    constructor (array) {
-        this.vertices = [];
-        this.sides = [];
-        for (let a of array) {
-            this.vertices.push({x:a[0],y:a[1]})
-        }
-        for (let i = 0; i < this.vertices.length; i++) {
-            if (i < this.vertices.length-1) {
-                this.sides[i] = [this.vertices[i],this.vertices[i+1]]
-            } else {
-                this.sides[i] = [this.vertices[i],this.vertices[0]]
-            }
-        }
-    }
-    draw (weight,color) {
-        push();
-        stroke(color)
-        strokeWeight(weight)
-        noFill();
-        beginShape();
-        for (let v of this.vertices) {
-            vertex(v.x,v.y)
-        }
-        endShape(CLOSE)
-        pop();
-    }
-    intersect (line,boundary) {
-        if (typeof boundary == "undefined") {
-            boundary = {
-                w1: 0,
-                w2: canvas.width,
-                h1: 0,
-                h2: canvas.height,
-            }
-        }
-        let points = []
-        for (let s of this.sides) {
-            let intersection = intersectar(line.point1,line.point2,s[0],s[1],boundary)
-            if (intersection !== false) {
-                points.push(intersection)
-            }
-        }
-        return points;
-    }
 }
 
 function keyReleased () {
@@ -222,5 +111,5 @@ function drawBorder() {
     borderLines.line((w1-random(15,25)),h1,(w2+random(15,25)),h1,colors[palette][2],0.6,"straight");
     borderLines.line(w1,(h1-random(15,25)),w1,(h2+random(15,25)),colors[palette][2],0.6,"straight");
     borderLines.line(w2,(h1-random(15,25)),w2,(h2+random(15,25)),colors[palette][2],0.6,"straight");
-    borderLines.line((w1-random(15,25)),h2,(w2+random(15,25)),h2,colors[palette][2],0.6,"straight");
+    borderLines.line((w2+random(15,25)),h2,(w1-random(15,25)),h2,colors[palette][2],0.6,"straight");
 }

@@ -174,19 +174,19 @@ class Pos {
         }
         this.update(this.x,this.y);
     }
-    plotTo (_plot,_length,_step_length) {
+    plotTo (_plot,_length,_step_length,_scale) {
         if (typeof _step_length == 'undefined') {
             _step_length = step_length;
         }
         this.num_steps = _length/_step_length;
         if (this.isIn()) {
             for (this.i=0;this.i<this.num_steps;this.i++) {
-                this.update(this.x,this.y);   
+                this.update(this.x,this.y);
                 this.x_step = (_step_length * cos(this.angle()-_plot.angle(this.plotted)));
                 this.y_step = (_step_length * sin(this.angle()-_plot.angle(this.plotted)));
                 this.x = (this.x+this.x_step);
                 this.y = (this.y+this.y_step);
-                this.plotted = this.plotted+_step_length;
+                this.plotted = this.plotted+_step_length/_scale;
             }
         } else {
             this.plotted = this.plotted+_step_length;

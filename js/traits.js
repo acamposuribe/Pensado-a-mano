@@ -1,7 +1,7 @@
 // COLOR PALETTES
 let palette = parseInt(weightedRand({
     0: 60,     // Blac Ivoire
-    1: 90000,    // Outremer Gris
+    1: 90,    // Outremer Gris
     2: 40,     // Gris Clair
     3: 65,     // Le Rubis
     4: 0,     // Playgrounds
@@ -22,7 +22,6 @@ const colors = [
 ];
 let gridColor = colors[palette][2];
 const pickedColors = colors[palette]
-
 
 // FLOW FIELD SELECTION
 const ffTypes = [

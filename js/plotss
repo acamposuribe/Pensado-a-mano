@@ -1,0 +1,56 @@
+class Plot {
+    constructor (_type) {
+        this.segments = [];
+        this.angles = [];
+        this.border = [];
+        this.adjust = [0,0]
+        this.type = _type;
+        this.dir = 0;
+    }
+    addSegment (_a = 0,_length = 0,_out = 1) {
+        if (this.angles.length > 0) {
+            this.angles.splice(-1)
+        }
+        this.angles.push(_a);
+        this.segments.push(_length);
+        this.outer.push(_out);
+        this.length =  this.segments.reduce((partialSum, a) => partialSum + a, 0);
+        this.angles.push(_a)
+    }
+    endPlot (_a = 0) {
+        this.angles.splice(-1)
+        this.angles.push(_a);
+    }
+    center (_adj_x, _adj_y) {
+        this.adjust = [_adj_x,_adj_y];
+    }
+    rotate (_angle) {
+        this.dir = _angle;
+    }
+    angle (_d) {
+        if (_d > this.length) { return 0; }
+        this.calcIndex(_d);
+        switch (this.type) {
+            case "curve":
+                return map(_d-this.suma,0,this.segments[this.index],this.angles[this.index],this.angles[this.index+1],true) + this.dir;
+            case "truncated":
+                return this.angles[this.index] + this.dir;
+        }
+    }
+    border (_d) {
+        if (_d > this.length) { return false; }
+        this.calcIndex(_d);
+        if (this.outer[this.index] == 1) {
+            return true;
+        } else { return false;}
+    }
+    calcIndex(_d) {
+        this.index = -1;
+        let d = 0; this.suma = 0;
+        while (d <= _d) {
+            this.suma = d
+            d += this.segments[this.index+1]
+            this.index++;
+        }
+    }
+}
