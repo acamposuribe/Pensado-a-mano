@@ -49,7 +49,7 @@ class LineStyle {
         this.buffers = []
         for (let m = 0; m < 6; m++) {
             this.buffers[m] = createGraphics(canvas.width, canvas.height,SVG);
-            this.buffers[m].stroke(color_svg)
+            this.buffers[m].stroke(pickedColors[m+2])
             this.buffers[m].strokeWeight(this.params[0])
             this.buffers[m].noFill()
         }
@@ -103,7 +103,7 @@ class LineStyle {
         this.buffer.beginShape()
             // GEOMETRY PARAMS
             
-            this.length = _plot.length, this.linepoint = new Pos(_x + _plot.adjust[0],_y + _plot.adjust[1]);
+            this.length = _plot.length, this.linepoint = new Pos(_x,_y);
             this.step = this.step_length/this.strokeWeight*sq(this.adj2)
             let numsteps = Math.round(_plot.length/this.step)*_scale;
 
@@ -369,6 +369,8 @@ class Plot {
         if (this.angles.length > 0) {
             this.angles.splice(-1)
         }
+        if (_a < 0) {_a = 360+_a} 
+        if (_a > 360) {_a = _a - int(_a/360)*360}
         this.angles.push(_a);
         this.segments.push(_length);
         this.outer.push(_out);
@@ -390,7 +392,10 @@ class Plot {
         this.calcIndex(_d);
         switch (this.type) {
             case "curve":
-                return map(_d-this.suma,0,this.segments[this.index],this.angles[this.index],this.angles[this.index+1],true) + this.dir;
+                let map0 = this.angles[this.index];
+                let map1 = this.angles[this.index+1];
+                if (abs(map1-map0) > 180) {if (map1 > map0) {map1 = - (360-map1);} else {map0 = - (360-map0);}}
+                return map(_d-this.suma,0,this.segments[this.index],map0,map1,true) + this.dir;
             case "truncated":
                 return this.angles[this.index] + this.dir;
         }

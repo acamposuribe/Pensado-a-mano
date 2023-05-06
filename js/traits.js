@@ -4,8 +4,8 @@ let palette = parseInt(weightedRand({
     1: 90,    // Outremer Gris
     2: 40,     // Gris Clair
     3: 65,     // Le Rubis
-    4: 0,     // Playgrounds
-    5: 20,     // BLeU
+    4: 20,     // Playgrounds
+    5: 0,     // BLeU
     6: 45,     // Bleu Outremer Foncé
     7: 15,     // Noir d'Ivoire
 }));
@@ -25,14 +25,14 @@ const pickedColors = colors[palette]
 
 // FLOW FIELD SELECTION
 const ffTypes = [
-    ["curved",10],
-    ["truncated",8],
-    ["tilted",15],
-    ["zigzag",15],
-    ["waves",20],
-    ["scales",5],
-    ["seabed",15],
-    ["partiture",5],
+    ["Windy",10],
+    ["Nasty",8],
+    ["Tilted",15],
+    ["Zigzag",15],
+    ["Wavy",20],
+    ["Scales",0],
+    ["Wobbly",15],
+    ["Honest",10],
 ];
 let ffSel = parseInt(weightedRand({
     0: ffTypes[0][1],  // curved
@@ -45,3 +45,51 @@ let ffSel = parseInt(weightedRand({
     7: ffTypes[7][1],  // partiture
 }));
 let ffType = ffTypes[ffSel][0];
+
+// DRAWING MODE
+const drawModes = [
+    ["Imitation",70],
+    ["Repetition",30],
+]
+let drawMode = drawModes[parseInt(weightedRand({
+    0: drawModes[0][1],
+    1: drawModes[1][1],
+}))][0]
+
+// HATCHING MODE
+const hatchModes = [
+    ["Spectrum",50],
+    ["Fill",25],
+    ["Void",25],
+]
+let hatchMode = hatchModes[parseInt(weightedRand({
+    0: hatchModes[0][1],
+    1: hatchModes[1][1],
+    2: hatchModes[2][1],
+}))][0]
+
+// DEPTH
+const depth = parseInt(weightedRand({
+    0: 60,
+    1: 40,
+}))
+let isDeep = false; if (depth == 1) {isDeep = true};
+
+// MAX DOODLES
+const maxDrawings = parseInt(weightedRand({
+    1: 5,
+    2: 20,
+    3: 30,
+    4: 40,
+    5: 20,
+}))
+
+// DEFINE FEATURES
+$fx.features({
+    'Palette': pickedColors[0],
+    'Mood': ffType,
+    'Drawing Mode': drawMode,
+    'Hatch Mode': hatchMode,
+    'Layering' : isDeep,
+    'Max Doodles' : maxDrawings,
+})

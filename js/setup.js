@@ -1,4 +1,4 @@
-// MESSY CODE BY ALEJANDRO - (RAT)CHITECT (@RATCHITECT), RATCHITECT.TEZ, RATCHITECT.ETH
+// MESSY CODE BY ALEJANDRO - @ratchitect
 // P5.JS LIBRARY LICENSE: https://p5js.org/copyright.html
 
 // SVG THINGS
@@ -7,9 +7,23 @@ let svgBuffers = [];
 
 let polygon;
 
+// DEFINE PARAMS
+$fx.params([
+    {
+      id: "draw_string",
+      name: "PASTE CLIPBOARD HERE",
+      type: "string",
+      default: "false",
+      options: {
+        minLength: 300,
+        maxLength: 2000,
+      },
+    },
+  ])
+
 function setup () {
         // CANVAS AND SEEDS
-        mainCanvas = createCanvas(canvas.width, canvas.height); angleMode(DEGREES), rectMode(CENTER), noiseSeed(fxrand() * 999999); pixelDensity(pDensity), randomSeed(fxrand()*99999);
+        mainCanvas = createCanvas(canvas.width, canvas.height); angleMode(DEGREES), rectMode(CENTER), noiseSeed($fx.rand() * 999999); pixelDensity(pDensity), randomSeed($fx.rand()*99999);
         // CANVAS TEXTURE BUFFER for Firefox Bug
         if (firefoxAgent) {
             canvas_texture = createGraphics(canvas.width, canvas.height);
@@ -18,8 +32,16 @@ function setup () {
             mainCanvas.id('principal'); 
         }
 
+        // GET HAND-DRAWN ELEMENTS
+        checkSegments();
+
+        // HAND-DRAWN SEED
+        handBuffer = new p5(hand);
+        // RESIZE AND LOADING
+        loadingScreen = new p5(sketch);
+
         // CREATE FLOW FIELD
-        createField(ffType)
+        createField(ffSel)
         // BACKGROUND
         background(colors[palette][1]);
 
@@ -28,70 +50,37 @@ function setup () {
 
         // INITIALISE GLOBAL BRUSHES
         gridLines = new LineStyle("2B"), borderLines = new LineStyle("HB");
+        thinLines = new LineStyle("HB")
 
         // DRAW BORDER
         drawBorder();
 
-        // RESIZE AND LOADING
-        let myp5 = new p5(sketch);
-
-        let polygons = [];
-
-        for (let i = 0; i < 5; i++) {
-            polygons.push(new Polygon([[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)]]))
+        if (isDeep) {
+            let polygons = [];
+            for (let i = 0; i < 5; i++) {polygons.push(new Polygon([[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)]]))}
+            hatch2 = new Hatch(25,random(0,180),polygons,true)
+            hatch2.rainbowHatch(thinLines);
         }
 
-        /*
-        for (let p of polygons) {
-            let angle = random(0,180)
-            if (random() < 0.3) {
-                p.hatch("around",random(15,40),angle,gridLines,pickedColors[int(random(2,8))],1)
-            } else {
-                p.hatch("inside",random(15,40),angle,gridLines,pickedColors[int(random(2,8))],1)
-            }
+        if (drawn) {
+            drawPolygons()
         }
-        */
-
-        test_plot = new Plot("curve")
-        test_plot.addSegment(0,300,1)
-        test_plot.addSegment(90,300,1)
-        test_plot.addSegment(180,300,1)
-        test_plot.addSegment(270,300,1)
-        test_plot.endPlot(360)
-
-        //gridLines.plot(test_plot,1000,1000,2,pickedColors[int(random(2,8))],1)
-
-        //test_plot.genPol(1000,1000,2).hatch("around",random(15,30),random(0,180),gridLines,pickedColors[int(random(2,8))],1)
-        //test_plot.genPol(1500,1500,3).hatch("around",random(15,30),random(0,180),gridLines,pickedColors[int(random(2,8))],1)
-
-        let polygons2 = [];
-        for (let i = 0; i < 5; i++) {
-            polygons2.push(test_plot.genPol(random(w1,w2),random(h1,h2),random(1,3)))
-        }
-
-        hatch = new Hatch(10,random(0,180),polygons2,true)
-        hatch.rainbowHatch(gridLines);
 }
 
 let l; // loading phases
 
 let LL = 0;
 
-function draw () {
-
-    loaded = 4;
-    
+function draw () {  
     
     if (firefoxAgent) {
         canvas_texture.image(lienzo,0,0);
     }
 
-    frameRate(10)
-    noLoop();
-}
+    createDoodle()
 
-function mouseClicked() {
-    noLoop();
+    //frameRate(10)
+    //noLoop();
 }
 
 function keyReleased () {
@@ -103,7 +92,7 @@ function keyReleased () {
             }
             svg_final.image(layerBuffer,0,0)
         }
-        save(svg_final,"TEST-" + fxhash)
+        save(svg_final,"TEST-" + $fx.hash)
     }   
 }
 
@@ -113,3 +102,14 @@ function drawBorder() {
     borderLines.line(w2,(h1-random(15,25)),w2,(h2+random(15,25)),colors[palette][2],0.6,"straight");
     borderLines.line((w2+random(15,25)),h2,(w1-random(15,25)),h2,colors[palette][2],0.6,"straight");
 }
+
+// DRAW HATCH with TRAITS
+
+function drawPolygons () {
+    let polygons3 = []
+    for (let mp of mousePlots) {
+        polygons3.push(mp[0].genPol(mp[1].x,mp[1].y,1))
+    }
+    let hatch3 = new Hatch(12,random(0,180),polygons3,true)
+    hatch3.rainbowHatch(gridLines);
+ }

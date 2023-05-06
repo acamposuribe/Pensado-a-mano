@@ -3,7 +3,7 @@ let resolucion = parseFloat(canvas.width*0.01), left_x = parseFloat(canvas.width
 // FLOW FIELD TYPES - Create the different Flow Fields
 function createField (a) {
     switch (a) {
-        case "curved":
+        case 0:
             angleRange = rande(-25,-15);
             if (rande(0,100)%2 == 0) {angleRange=angleRange*-1}
             for (column=0;column<num_columns;column++){
@@ -18,7 +18,7 @@ function createField (a) {
             }
             minAngle = 10;
         break;
-        case "truncated":
+        case 1:
             angleRange = rande(-25,-15);
             if (rande(0,100)%2 == 0) {angleRange=angleRange*-1}
             truncate = rande(5,10);
@@ -35,7 +35,7 @@ function createField (a) {
             }
             minAngle = 10;
         break;
-        case "tilted":
+        case 2:
             angleRange = rande(-45,-25);
             if (rande(0,100)%2 == 0) {angleRange=angleRange*-1}
             var dif = angleRange;
@@ -50,7 +50,7 @@ function createField (a) {
             }
             minAngle = 20;
         break;
-        case "zigzag":
+        case 3:
             angleRange = rande(-30,-15);
             if (rande(0,100)%2 == 0) {angleRange=angleRange*-1}
             var dif = angleRange;
@@ -67,7 +67,7 @@ function createField (a) {
             }
             minAngle = 15;
         break;
-        case "waves":
+        case 4:
             sinrange = rande(10,15);
             cosrange = rande(3,6);
             baseAngle = rande(20,35);
@@ -80,7 +80,7 @@ function createField (a) {
             }
             minAngle = 10;
         break;
-        case "scales":
+        case 5:
             baseSize = rand(0.3,0.8)
             baseAngle = rande(20,45);
             for (column=0;column<num_columns;column++){
@@ -93,7 +93,7 @@ function createField (a) {
             }
             minAngle = 25;
         break;
-        case "seabed":
+        case 6:
             baseSize = rand(0.3,0.8)
             baseAngle = rande(18,26);
             for (column=0;column<num_columns;column++){
@@ -106,7 +106,7 @@ function createField (a) {
             }
             minAngle = 22;
         break;
-        case "partiture":
+        case 7:
             for (column=0;column<num_columns;column++){
                 flow_field.push([0]);
                 for (row=0;row<num_rows;row++) {               

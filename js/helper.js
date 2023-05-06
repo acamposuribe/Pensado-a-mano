@@ -19,14 +19,14 @@
 
 
 // AUXILIARY RAND FUNCTIONS
-function rand(e, r) {return mapRange(fxrand(), 0, 1, e, r)}
-function rande(e, r) {return Math.floor(mapRange(fxrand(), 0, 1, e, r))}
+function rand(e, r) {return mapRange($fx.rand(), 0, 1, e, r)}
+function rande(e, r) {return Math.floor(mapRange($fx.rand(), 0, 1, e, r))}
 function weightedRand(e) {
     var r, a, n = [];
     for (r in e)
         for (a = 0; a < 10 * e[r]; a++)
             n.push(r);
-        return n[Math.floor(fxrand() * n.length)]
+        return n[Math.floor($fx.rand() * n.length)]
 }
 function mapRange (value, a, b, c, d) {
     // first map value from (a..b) to (0..1)
