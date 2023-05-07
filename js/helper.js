@@ -13,7 +13,7 @@
     canvas.prop = canvas.height/canvas.width;
 
     // Margins
-    let marg = weightedRand({0.07: 0, 0.09: 0, 0.12: 80, 0: 20});
+    let marg = weightedRand({0.07: 0, 0.09: 0, 0.12: 80, 0: 0});
     let margin = (canvas.width * marg); 
     let w1 = margin, w2 = (canvas.width - margin), h1 = margin, h2 = (canvas.height - margin);
 
