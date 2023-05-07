@@ -244,11 +244,11 @@ class Hatch {
             }
         }
     }
-    rainbowHatch (brush) {
+    rainbowHatch (brush,weight = 1) {
         for (let dd of this.dots) {
             let index = 2;
             for (let i = 0; i < dd.length-1; i++) {
-                    brush.line(dd[i].x,dd[i].y,dd[i+1].x,dd[i+1].y,pickedColors[index],1)
+                    brush.line(dd[i].x,dd[i].y,dd[i+1].x,dd[i+1].y,pickedColors[index],weight * random(0.8,1.2))
                 index++;
                 if (index == 8) {
                     index = 2;
@@ -260,7 +260,7 @@ class Hatch {
         for (let dd of this.dots) {
             for (let i = 0; i < dd.length-1; i++) {
                 if (i % 2 == 0) {
-                    brush.line(dd[i].x,dd[i].y,dd[i+1].x,dd[i+1].y,color,weight)
+                    brush.line(dd[i].x,dd[i].y,dd[i+1].x,dd[i+1].y,color,random(0.8,1.2)*weight)
                 }
             }
         }
@@ -269,7 +269,7 @@ class Hatch {
         for (let dd of this.dots) {
             for (let i = 0; i < dd.length-1; i++) {
                 if (i % 2 == 0) {
-                    brush.line(dd[i].x,dd[i].y,dd[i+1].x,dd[i+1].y,color,weight)
+                    brush.line(dd[i].x,dd[i].y,dd[i+1].x,dd[i+1].y,color,random(0.8,1.2)*weight)
                 }
             }
         }

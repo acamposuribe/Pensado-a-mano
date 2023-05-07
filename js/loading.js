@@ -45,20 +45,23 @@ let sketch = function(p) {
         p.translate(newW/2,newH/2)
 
         if (loaded == 3) {
-            p.textSize(60*pixel)
+
+            let mult = 0.75;
+
+            p.textSize(60*pixel*mult)
 
             if ($fx.getParam("draw_string").slice(0, 5) !== "false") {
                 p.fill(pickedColors[rande(2,7)]);
-                p.rect(0,-120*pixel,p.textWidth(message3)+25*pixel,70*pixel)
+                p.rect(0,-120*pixel*mult,p.textWidth(message3)+25*pixel*mult,70*pixel*mult)
                 p.fill(pickedColors[1]);
-                p.text(message3,0,-120*pixel);
+                p.text(message3,0,-120*pixel*mult);
             }
             p.fill(pickedColors[2]);
-            p.rect(0,-40*pixel,p.textWidth(message1)+25*pixel,70*pixel)
-            p.rect(0,40*pixel,p.textWidth(message2)+25*pixel,70*pixel)
+            p.rect(0,-40*pixel*mult,p.textWidth(message1)+25*pixel*mult,70*pixel*mult)
+            p.rect(0,40*pixel*mult,p.textWidth(message2)+25*pixel*mult,70*pixel*mult)
             p.fill(pickedColors[1]);
-            p.text(message1,0,-40*pixel);
-            p.text(message2,0,40*pixel);
+            p.text(message1,0,-40*pixel*mult);
+            p.text(message2,0,40*pixel*mult);
         }
     };
 };

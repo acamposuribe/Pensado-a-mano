@@ -151,7 +151,7 @@ let hand = function(p) {
     };
     p.draw = function() {
         pixel = newW/canvas.width;
-        if (drawing) {
+        if (drawing && !drawn) {
             p.strokeWeight(2)
             p.stroke(pickedColors[2])
             p.circle(handBuffer.mouseX,handBuffer.mouseY,2,2)

@@ -40,8 +40,8 @@ let ffType = ffTypes[ffSel][0];
 
 // DRAWING MODE
 const drawModes = [
-    ["Imitation",70,[50,10,20,15]],
-    ["Repetition",30,[50,0,0,30]],
+    ["Imitation",70,[60,10,20,15]],
+    ["Repetition",20,[50,0,0,50]],
     ["Learning",30,[50,0,0,30]],
 ]
 let drawSel = parseInt(weightedRand({
@@ -78,6 +78,9 @@ switch (hatchMode) {
         break; 
     case "Spectrum":
         isDeep = true;
+        if (drawMode = "Repetition" && rand(0,1) < 0.5) {
+            isDeep = false;
+        }
         break; 
     case "In and Around":
         isDeep = false;

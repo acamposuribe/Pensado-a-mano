@@ -55,7 +55,7 @@ function setup () {
             let polygons = [];
             for (let i = 0; i < 5; i++) {polygons.push(new Polygon([[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)]]))}
             hatch2 = new Hatch(25,random(0,180),polygons,true)
-            hatch2.rainbowHatch(thinLines);
+            hatch2.rainbowHatch(thinLines,0.7);
         }
 
         // DRAW HATCHES IF EXISTING
