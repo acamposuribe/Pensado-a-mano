@@ -174,31 +174,5 @@ let hand = function(p) {
         else if (drawn) {
             p.clear();
         }
-        if(!drawn) {
-            p.push();
-            p.noFill()
-            p.stroke(255,0,0)
-            p.strokeWeight(8*pixel)
-            
-            switch (drawMode) {
-                case "Repetition":
-                    p.rectMode(p.CORNERS);
-                    p.rect(w1*pixel,h1*pixel,w1*pixel+(w2-w1)/tileNr*pixel,h1*pixel+(h2-h1)/tileNr*pixel)
-                break;
-                case "Learning":
-                    p.line(newW/2,newH/2-200*pixel,newW/2,newH/2+200*pixel)
-                    p.line(newW/2-200*pixel,newH/2,newW/2+200*pixel,newH/2)
-                break;
-                case "Rotation":
-                    let dist = (w2-w1)/4
-                    p.line(newW/2,newH/2,newW/2+dist*cos(-90),newH/2+dist*sin(-90))
-                    p.line(newW/2,newH/2,newW/2+dist*cos(-90-360/polarNr),newH/2+dist*sin(-90-360/polarNr))
-                break;
-                case "Imitation":
-                    
-                break;
-            }
-            p.pop();
-        }
     };
 };
