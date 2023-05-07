@@ -75,10 +75,11 @@ function showHatch () {
     randomSeed(seed*5523)
 
     // DRAW BASE LAYER if NEEDED
+    let angle1 = random(0,180);
     if (isDeep) {
         let polygons = [];
         for (let i = 0; i < 5; i++) {polygons.push(new Polygon([[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)]]))}
-        hatch2 = new Hatch(25,random(0,180),polygons,true)
+        hatch2 = new Hatch(25,angle1,polygons,true)
         hatch2.rainbowHatch(thinLines,0.7);
     }
 
@@ -126,7 +127,11 @@ function showHatch () {
             }
         break;
         case "Spectrum":
-            let hatch3 = new Hatch(random(12,18),random(0,180),polygons3,true)
+            let angle2 = random(0,180);
+            while (abs(angle1-angle2) < 30) {
+                angle2 = random(0,180)
+            }
+            let hatch3 = new Hatch(random(12,18),angle2,polygons3,true)
             hatch3.rainbowHatch(gridLines);
         break;
         case "Fill":
