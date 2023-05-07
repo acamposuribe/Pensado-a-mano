@@ -43,7 +43,7 @@ const drawModes = [
     ["Imitation",70,[60,10,20,15]],
     ["Repetition",20,[50,0,0,50]],
     ["Learning",30,[50,0,0,30]],
-    ["Rotation",20,[50,0,0,50]],
+    ["Rotation",10,[50,0,0,50]],
 ]
 let drawSel = parseInt(weightedRand({
     0: drawModes[0][1],
