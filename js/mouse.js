@@ -65,8 +65,10 @@ function mousePressed () {
     }
 }
 
+
+
 function mouseDragged() {
-    if (!drawn) {
+    if (!drawn && warning == 0) {
         if (mouseIsPressed) {
             loaded = 4;
             // WHILE CLICKED - Store values in Array
@@ -83,6 +85,9 @@ function mouseDragged() {
                 start.x = mouseX1
                 start.y = mouseY1
             }
+            if (btoa(segments[drawNumber]).length >= 1900 && !warning) {
+                warning = 1;
+            }
         }
     }
 }
@@ -94,10 +99,10 @@ function checkDrawing()
     mouseX1 = handBuffer.mouseX/pixelX
     mouseY1 =  handBuffer.mouseY/pixelY
 
-    if (!drawn && btoa(segments[drawNumber]).length >= 1900) {
+    if (!drawn && btoa(segments[drawNumber]).length >= 1900 && !warning) {
         finishDrawing()
-        drawn = true;
         showHatch()
+        drawNumber = maxDrawings;
     }
     if (drawNumber >= maxDrawings) {
         drawn = true;
@@ -105,6 +110,9 @@ function checkDrawing()
  }
 
 function mouseReleased() {
+    if (warning == 1) {
+        warning = false;
+    }
     finishDrawing()
 }
 
@@ -130,6 +138,8 @@ function finishDrawing () {
         drawing = false;
 
         // Copy Contents to Clipboard
+        copyToClipboard("drawn" + btoa(segments))
+        copyToClipboard("drawn" + btoa(segments))
         copyToClipboard("drawn" + btoa(segments))
 
         // Show Result
@@ -185,15 +195,7 @@ let hand = function(p) {
                     p.line(newW/2,newH/2,newW/2+dist*cos(-90-360/polarNr),newH/2+dist*sin(-90-360/polarNr))
                 break;
                 case "Imitation":
-                    for (let i = 0; i <= 8; i++) {
-                        for (let j = 0; j <= 8; j++) { 
-                            let xp = (w1 + i * (w2-w1) / 8) * pixel
-                            let xy = (w1 + j * (h2-h1) / 8) * pixel
-                            p.strokeWeight(1*pixel)
-                            p.line(xp,xy-10*pixel,xp,xy+10*pixel)
-                            p.line(xp-10*pixel,xy,xp+10*pixel,xy)
-                        }
-                    }
+                    
                 break;
             }
             p.pop();

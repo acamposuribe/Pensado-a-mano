@@ -70,6 +70,9 @@ let hatchMode = hatchModes[parseInt(weightedRand({
     3: hatchModes[3][1],
 }))][0]
 
+// SHOW LINE?
+const showLine = rande(0,2)
+
 // DEPTH
 let isDeep;
 switch (hatchMode) {

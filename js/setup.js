@@ -88,6 +88,9 @@ function showHatch () {
         case "Imitation":
             for (let mp of mousePlots) {
                 polygons3.push(mp[0].genPol(mp[1].x,mp[1].y,1))
+                if (showLine == 1 && random() < 0.30) {
+                    thinLines.plot(mp[0],mp[1].x,mp[1].y,1,pickedColors[int(random(2,7))],1)
+                }
             }
         break;
         case "Repetition":
@@ -96,6 +99,9 @@ function showHatch () {
                 for (let j = 0; j < tileNr; j++) {
                     let pol = mp[0].genPol(mp[1].x + ( (w2-w1) / tileNr ) * i,mp[1].y + ( (h2-h1) / tileNr ) * j,1)
                     polygons3.push(pol)
+                    if (showLine == 1 && random() < 0.30) {
+                        thinLines.plot(mp[0],mp[1].x + ( (w2-w1) / tileNr ) * i,mp[1].y + ( (h2-h1) / tileNr ) * j,1,pickedColors[int(random(2,7))],1)
+                    }
                 }                
                 }
             }
@@ -118,9 +124,8 @@ function showHatch () {
                     mp[0].rotate(-i*aa)
                     let pol = mp[0].genPol(newOrigin[0],newOrigin[1],1)
                     polygons3.push(pol)
-
-                    if (random() < 0.3) {
-                        gridLines.plot(mp[0],newOrigin[0],newOrigin[1],1,pickedColors[int(random(2,7))],1)
+                    if (showLine == 1 && random() < 0.30) {
+                        thinLines.plot(mp[0],newOrigin[0],newOrigin[1],1,pickedColors[int(random(2,7))],1)
                     }
                 }
             }

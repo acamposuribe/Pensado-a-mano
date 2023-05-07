@@ -1,6 +1,6 @@
 let loaded = 3;
 let pixel = 1, canvas_texture;
-
+let warning = 0;
 let loadingScreen;
 
 // LOADING SCREEN
@@ -9,17 +9,17 @@ let sketch = function(p) {
     let message, message1, message2;
     switch (drawMode) {
         case "Imitation":
-            message = "Mode: IMITATE"
+            message = "Mode: FREEHAND"
             message1 = "1. Draw " + maxDrawings + " SHAPES";
             message2 = '2. Paste Clipboard on Params Field';
         break;
         case "Repetition":
-            message = "Mode: REPEAT"
+            message = "Mode: TILES"
             message1 = "1. Design the TILE";
             message2 = '2. Paste Clipboard on Params Field';
         break;
         case "Learning":
-            message = "Mode: LEARN"
+            message = "Mode: TEACH"
             message1 = "1. TEACH ME a shape";
             message2 = '2. Paste Clipboard on Params Field';
         break;
@@ -54,13 +54,21 @@ let sketch = function(p) {
             p.image(mainCanvas,0,0,newW,newH)
         }
         
+        let mult = 0.68;
+        p.textSize(60*pixel*mult)
+        if (warning == 1) {
+            p.push();
+            let message4 = "LIMIT REACHED, RELEASE MOUSE !!"
+            p.textAlign(p.CENTER,p.CENTER);
+            p.translate(newW/2,newH/2)
+            p.fill(pickedColors[rande(2,7)]);
+            p.rect(0,0,p.textWidth(message4)+25*pixel*mult,70*pixel*mult)
+            p.fill(pickedColors[1]);
+            p.text(message4,0,0);
+            p.pop();
+        }
 
         if (loaded == 3) {
-
-            let mult = 0.68;
-
-            p.textSize(60*pixel*mult)
-
             if ($fx.getParam("draw_string").slice(0, 5) !== "false") {
                 p.push();
                 p.textAlign(p.CENTER,p.CENTER);
@@ -68,7 +76,7 @@ let sketch = function(p) {
                 p.fill(pickedColors[rande(2,7)]);
                 p.rect(0,0,p.textWidth(message3)+25*pixel*mult,70*pixel*mult)
                 p.fill(pickedColors[1]);
-                p.text(message3,0,-120*pixel*mult);
+                p.text(message3,0,0);
                 p.pop();
             }
             p.push();
