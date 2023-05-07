@@ -50,14 +50,6 @@ function setup () {
         // DRAW BORDER
         drawBorder();
 
-        // DRAW BASE LAYER if NEEDED
-        if (isDeep) {
-            let polygons = [];
-            for (let i = 0; i < 5; i++) {polygons.push(new Polygon([[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)]]))}
-            hatch2 = new Hatch(25,random(0,180),polygons,true)
-            hatch2.rainbowHatch(thinLines,0.7);
-        }
-
         // DRAW HATCHES IF EXISTING
         if (drawn) {
             showHatch()
@@ -78,9 +70,17 @@ function drawBorder() {
 
 // DRAW HATCH with TRAITS
 function showHatch () {
-    
+
     // TIPOS DE HATCH
     randomSeed(seed*5523)
+
+    // DRAW BASE LAYER if NEEDED
+    if (isDeep) {
+        let polygons = [];
+        for (let i = 0; i < 5; i++) {polygons.push(new Polygon([[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)],[random(w1,w2),random(h1,h2)]]))}
+        hatch2 = new Hatch(25,random(0,180),polygons,true)
+        hatch2.rainbowHatch(thinLines,0.7);
+    }
 
     let polygons3 = []
     switch(drawMode) {
