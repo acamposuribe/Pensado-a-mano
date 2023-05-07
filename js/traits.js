@@ -42,7 +42,7 @@ let ffType = ffTypes[ffSel][0];
 const drawModes = [
     ["Imitation",70,[50,10,20,15]],
     ["Repetition",30,[50,0,0,30]],
-    ["Learning",3000,[50,0,0,30]],
+    ["Learning",30,[50,0,0,30]],
 ]
 let drawSel = parseInt(weightedRand({
     0: drawModes[0][1],
