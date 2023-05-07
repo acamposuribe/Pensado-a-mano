@@ -49,6 +49,11 @@ function mousePressed () {
         console.log("Start")
         // WHEN CLICK - START
         origin = {x:mouseX1,y:mouseY1}
+
+        if (drawMode == "Learning") {
+            origin = {x:canvas.width/2,y:canvas.height/2}
+        }
+
         start = {x:mouseX1,y:mouseY1}
 
         // Initiate Doodle
@@ -159,13 +164,38 @@ let hand = function(p) {
         else if (drawn) {
             p.clear();
         }
-        if(!drawn && drawMode == "Repetition") {
+        if(!drawn) {
             p.push();
             p.noFill()
             p.stroke(255,0,0)
-            p.strokeWeight(10*pixel)
-            p.rectMode(p.CORNERS);
-            p.rect(w1*pixel,h1*pixel,w1*pixel+(w2-w1)/tileNr*pixel,h1*pixel+(h2-h1)/tileNr*pixel)
+            p.strokeWeight(8*pixel)
+            
+            switch (drawMode) {
+                case "Repetition":
+                    p.rectMode(p.CORNERS);
+                    p.rect(w1*pixel,h1*pixel,w1*pixel+(w2-w1)/tileNr*pixel,h1*pixel+(h2-h1)/tileNr*pixel)
+                break;
+                case "Learning":
+                    p.line(newW/2,newH/2-200*pixel,newW/2,newH/2+200*pixel)
+                    p.line(newW/2-200*pixel,newH/2,newW/2+200*pixel,newH/2)
+                break;
+                case "Rotation":
+                    let dist = (w2-w1)/4
+                    p.line(newW/2,newH/2,newW/2+dist*cos(-90),newH/2+dist*sin(-90))
+                    p.line(newW/2,newH/2,newW/2+dist*cos(-90-360/polarNr),newH/2+dist*sin(-90-360/polarNr))
+                break;
+                case "Imitation":
+                    for (let i = 0; i <= 8; i++) {
+                        for (let j = 0; j <= 8; j++) { 
+                            let xp = (w1 + i * (w2-w1) / 8) * pixel
+                            let xy = (w1 + j * (h2-h1) / 8) * pixel
+                            p.strokeWeight(1*pixel)
+                            p.line(xp,xy-10*pixel,xp,xy+10*pixel)
+                            p.line(xp-10*pixel,xy,xp+10*pixel,xy)
+                        }
+                    }
+                break;
+            }
             p.pop();
         }
     };

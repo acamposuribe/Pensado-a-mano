@@ -43,15 +43,18 @@ const drawModes = [
     ["Imitation",70,[60,10,20,15]],
     ["Repetition",20,[50,0,0,50]],
     ["Learning",30,[50,0,0,30]],
+    ["Rotation",20,[50,0,0,50]],
 ]
 let drawSel = parseInt(weightedRand({
     0: drawModes[0][1],
     1: drawModes[1][1],
     2: drawModes[2][1],
+    3: drawModes[3][1],
 }))
 let drawMode = drawModes[drawSel][0]
 const tileNr = rande(2,4);
 const dNr = rande(3,7);
+const polarNr = rande(3,10);
 
 // HATCHING MODE
 const hatchModes = [
@@ -97,7 +100,7 @@ switch(drawMode) {
             5: 30,
         }))
         break;
-    case "Repetition": case "Learning":
+    case "Repetition": case "Learning": case "Rotation":
         maxDrawings = 1;
         break;
 }

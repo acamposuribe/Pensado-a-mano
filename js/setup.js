@@ -108,6 +108,23 @@ function showHatch () {
                 }
             }
         break;
+        case "Rotation" :
+            for (let mp of mousePlots) {
+                let aa = 360/polarNr;
+                for (let i = 0; i < polarNr; i++) {
+                    let vector = createVector(mp[1].x-canvas.width/2,mp[1].y-canvas.height/2)
+                    vector.rotate(i*aa)
+                    let newOrigin = [canvas.width/2+vector.x,canvas.height/2+vector.y]
+                    mp[0].rotate(-i*aa)
+                    let pol = mp[0].genPol(newOrigin[0],newOrigin[1],1)
+                    polygons3.push(pol)
+
+                    if (random() < 0.3) {
+                        gridLines.plot(mp[0],newOrigin[0],newOrigin[1],1,pickedColors[int(random(2,7))],1)
+                    }
+                }
+            }
+        break;
     }
 
     // TIPOS DE HATCH
