@@ -2,12 +2,8 @@
 let palette = parseInt(weightedRand({
     0: 60,     // Blac Ivoire
     1: 90,    // Outremer Gris
-    2: 40,     // Gris Clair
-    3: 65,     // Le Rubis
-    4: 20,     // Playgrounds
-    5: 0,     // BLeU
-    6: 45,     // Bleu Outremer Foncé
-    7: 15,     // Noir d'Ivoire
+    2: 30,     // Gris Clair
+    3: 50,     // Le Rubis
 }));
 const colors = [
     // Nombre,                  color1,     color2,          color3,        color4,         color5,         color6,        color7 
@@ -15,10 +11,6 @@ const colors = [
     ["Outremer Gris",           "#e2e7dc",  "#7b4800",      "#002185",      "#003c32",      "#fcd300",      "#ff2702",      "#6b9404"],
     ["Gris Clair",              "#ccccc6",  "#474238",      "#f4bd48",      "#9c2128",      "#395a8e",      "#7facc6",      "#2c695a"],   
     ["Le Rubis",                "#ffe6d4",  "#6c2b3b",      "#c76282",      "#445e87",      "#003c32",      "#e0b411",      "#c8491b"],
-    ["Playgrounds",             "#c49a70",  "#4e0042",      "#002185",      "#076d16",      "#feec00",      "#ff6900",      "#ff2702"],
-    ["Bleu Outremer",           "#4e6498",  "#cdd3e3",      "#c6353c",      "#f6684f",      "#fcd300",      "#488b6d",      "#7fb4b5"],   
-    ["Bleu Outremer Fonc\xE9",  "#0e2d58",  "#f4f4f4",      "#c8c9ca",      "#939598",      "#616568",      "#0e1318",      "#080f15"],
-    ["Noir d'Ivoire",           "#080f15",  "#C8C1B7",      "#d7d7d7",      "#b0b0b0",      "#8b8b8b",      "#676767",      "#464646"],
 ];
 let gridColor = colors[palette][2];
 const pickedColors = colors[palette]
@@ -48,48 +40,68 @@ let ffType = ffTypes[ffSel][0];
 
 // DRAWING MODE
 const drawModes = [
-    ["Imitation",70],
-    ["Repetition",30],
+    ["Imitation",70,[50,10,20,15]],
+    ["Repetition",30,[50,0,0,30]],
+    ["Learning",3000,[50,0,0,30]],
 ]
-let drawMode = drawModes[parseInt(weightedRand({
+let drawSel = parseInt(weightedRand({
     0: drawModes[0][1],
     1: drawModes[1][1],
-}))][0]
+    2: drawModes[2][1],
+}))
+let drawMode = drawModes[drawSel][0]
+const tileNr = rande(2,4);
+const dNr = rande(3,7);
 
 // HATCHING MODE
 const hatchModes = [
-    ["Spectrum",50],
-    ["Fill",25],
-    ["Void",25],
+    ["Spectrum",drawModes[drawSel][2][0]],
+    ["Fill",drawModes[drawSel][2][1]],
+    ["Nest",drawModes[drawSel][2][2]],
+    ["In and Around",drawModes[drawSel][2][3]],
 ]
 let hatchMode = hatchModes[parseInt(weightedRand({
     0: hatchModes[0][1],
     1: hatchModes[1][1],
     2: hatchModes[2][1],
+    3: hatchModes[3][1],
 }))][0]
 
 // DEPTH
-const depth = parseInt(weightedRand({
-    0: 60,
-    1: 40,
-}))
-let isDeep = false; if (depth == 1) {isDeep = true};
+let isDeep;
+switch (hatchMode) {
+    case "Fill":
+        isDeep = true;
+        break;
+    case "Nest":
+        isDeep = false;
+        break; 
+    case "Spectrum":
+        isDeep = true;
+        break; 
+    case "In and Around":
+        isDeep = false;
+        break; 
+}
 
 // MAX DOODLES
-const maxDrawings = parseInt(weightedRand({
-    1: 5,
-    2: 20,
-    3: 30,
-    4: 40,
-    5: 20,
-}))
+let maxDrawings;
+switch(drawMode) {
+    case "Imitation":
+        maxDrawings = parseInt(weightedRand({
+            3: 30,
+            4: 40,
+            5: 30,
+        }))
+        break;
+    case "Repetition": case "Learning":
+        maxDrawings = 1;
+        break;
+}
 
 // DEFINE FEATURES
 $fx.features({
-    'Palette': pickedColors[0],
     'Mood': ffType,
-    'Drawing Mode': drawMode,
-    'Hatch Mode': hatchMode,
-    'Layering' : isDeep,
-    'Max Doodles' : maxDrawings,
+    'Phase': drawMode,
+    'Hatch': hatchMode,
 })

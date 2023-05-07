@@ -211,6 +211,10 @@ class Hatch {
         }
         if (angle <= 90 && angle >= 0) {this.startY = 0} else {this.startY = canvas.height}
         let boundary = {w1: 0,w2: canvas.width,h1: 0,h2: canvas.height}
+
+        // if i want the hatch to go over borders, I need this boundary
+        // let boundary = {w1: -0.5*canvas.width,w2: 1.5*canvas.width,h1: -0.5*canvas.height,h2: 1.5*canvas.height}
+
         let ventana = new Polygon([[0,0],[canvas.width,0],[canvas.width,canvas.height],[0,canvas.height]])
         let i = 0;
         let linea = {
@@ -297,10 +301,10 @@ class Polygon {
     intersect (line,boundary) {
         if (typeof boundary == "undefined") {
             boundary = {
-                w1: 0,
-                w2: canvas.width,
-                h1: 0,
-                h2: canvas.height,
+                w1: -0.5*canvas.width,
+                w2: 1.5*canvas.width,
+                h1: -0.5*canvas.height,
+                h2: 1.5*canvas.height,
             }
         }
         let points = []
@@ -390,10 +394,12 @@ class Plot {
     angle (_d) {
         if (_d > this.length) { return 0; }
         this.calcIndex(_d);
+        
         switch (this.type) {
             case "curve":
                 let map0 = this.angles[this.index];
                 let map1 = this.angles[this.index+1];
+                if (typeof map1 == "undefined") { map1 = map0}
                 if (abs(map1-map0) > 180) {if (map1 > map0) {map1 = - (360-map1);} else {map0 = - (360-map0);}}
                 return map(_d-this.suma,0,this.segments[this.index],map0,map1,true) + this.dir;
             case "truncated":
@@ -418,7 +424,7 @@ class Plot {
     }
     genPol (_x,_y,_scale) {
         let vertices = []
-            let linepoint = new Pos(_x + this.adjust[0],_y + this.adjust[1]);
+            let linepoint = new Pos(_x,_y);
             let numsteps = Math.round(this.length/step_length)*_scale;
             for (let steps = 0; steps < numsteps; steps++) {
                 vertices.push([linepoint.x,linepoint.y])

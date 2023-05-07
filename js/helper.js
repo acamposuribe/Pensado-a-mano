@@ -13,10 +13,13 @@
     canvas.prop = canvas.height/canvas.width;
 
     // Margins
-    let marg = weightedRand({0.07: 40, 0.09: 20, 0.12: 1000, 0: 20});
+    let marg = weightedRand({0.07: 0, 0.09: 0, 0.12: 80, 0: 20});
     let margin = (canvas.width * marg); 
     let w1 = margin, w2 = (canvas.width - margin), h1 = margin, h2 = (canvas.height - margin);
 
+// SVG THINGS
+let svg_final;
+let svgBuffers = [];
 
 // AUXILIARY RAND FUNCTIONS
 function rand(e, r) {return mapRange($fx.rand(), 0, 1, e, r)}
@@ -29,9 +32,7 @@ function weightedRand(e) {
         return n[Math.floor($fx.rand() * n.length)]
 }
 function mapRange (value, a, b, c, d) {
-    // first map value from (a..b) to (0..1)
     value = (value - a) / (b - a);
-    // then map it from (0..1) to (c..d) and return it
     return c + value * (d - c);
 }
 

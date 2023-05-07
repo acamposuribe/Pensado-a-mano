@@ -1,29 +1,42 @@
-let phaseCom=0, phaseMax, phase = 0, loaded=2, frameStart = [], traits = false;
-let pixelLoad = 1, canvas_texture;
+let loaded = 3;
+let pixel = 1, canvas_texture;
 
 let loadingScreen;
 
 // LOADING SCREEN
 let sketch = function(p) {
-    let message1 = "DRAW A MAX. OF " + maxDrawings + " SHAPES";
-    let message2 = 'WHEN DONE, PASTE CLIPBOARD ON PARAMS FIELD';
+
+    // IMITATION
+    let message1 = "1. DRAW " + maxDrawings + " SHAPES";
+    let message2 = '2. PASTE CLIPBOARD ON PARAMS FIELD';
+    // REPETITION
+    if (drawMode == "Repetition") {
+        message1 = "1. DRAW YOUR TILE";
+        message2 = '2. PASTE CLIPBOARD ON PARAMS FIELD';
+    } else if (drawMode == "Learning") {
+        message1 = "1. TEACH ME A SHAPE";
+        message2 = '2. PASTE CLIPBOARD ON PARAMS FIELD';
+    }
+
+    let message3 = "WRONG STRING. TRY AGAIN";
+
     p.setup = function() {        
         cargando = p.createCanvas(newW, newH);
         p.pixelDensity(pDensity)
         cargando.id('carga');
         p.rectMode(p.CENTER);
         p.textAlign(p.CENTER,p.CENTER);
-        p.textFont("Courier"), p.textSize(20*pixelLoad), p.noStroke();
+        p.textFont("Courier"), p.noStroke();
         p.clear();
     };
     p.draw = function() {
-        pixelLoad = newW/canvas.width;
+        pixel = newW/canvas.width;
         if (resize) {
             p.resizeCanvas(Math.floor(newW), Math.floor(newH));
             resize = false;
-            
         }
         p.clear();
+        p.frameRate(20)
         if (firefoxAgent) {
             p.image(canvas_texture,0,0,newW,newH)
         } else {
@@ -32,12 +45,20 @@ let sketch = function(p) {
         p.translate(newW/2,newH/2)
 
         if (loaded == 3) {
-            p.fill(colors[palette][2]);
-            p.rect(0,-30*pixelLoad,p.textWidth(message1)+25*pixelLoad,40*pixelLoad)
-            p.rect(0,30*pixelLoad,p.textWidth(message2)+25*pixelLoad,40*pixelLoad)
-            p.fill(colors[palette][1]);
-            p.text(message1,0,-30*pixelLoad);
-            p.text(message2,0,30*pixelLoad);
+            p.textSize(60*pixel)
+
+            if ($fx.getParam("draw_string").slice(0, 5) !== "false") {
+                p.fill(pickedColors[rande(2,7)]);
+                p.rect(0,-120*pixel,p.textWidth(message3)+25*pixel,70*pixel)
+                p.fill(pickedColors[1]);
+                p.text(message3,0,-120*pixel);
+            }
+            p.fill(pickedColors[2]);
+            p.rect(0,-40*pixel,p.textWidth(message1)+25*pixel,70*pixel)
+            p.rect(0,40*pixel,p.textWidth(message2)+25*pixel,70*pixel)
+            p.fill(pickedColors[1]);
+            p.text(message1,0,-40*pixel);
+            p.text(message2,0,40*pixel);
         }
     };
 };

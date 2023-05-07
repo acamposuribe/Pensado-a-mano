@@ -10,12 +10,11 @@ let handBuffer;
 let mousePlots = [];
 
 function checkSegments() {
-    if ($fx.getParam("draw_string").slice(0, 5) !== "false") {
-        segments = $fx.getParam("draw_string");
+    if ($fx.getParam("draw_string").slice(0, 5) == "drawn") {
+        segments = $fx.getParam("draw_string").slice(5);
         drawn = true;
         segments = atob(segments)
         segments = segments.split(",");
-
         mousePlot = new Plot("curve")
         let origin;
         let o = 0;
@@ -41,7 +40,6 @@ function checkSegments() {
         }
         loaded = 4;
     } else {
-        console.log("hey")
         loaded = 3
     }
 }
@@ -62,26 +60,17 @@ function mousePressed () {
     }
 }
 
-function createDoodle()
- {
-    pixelX = newW/canvas.width;
-    pixelY = newH/canvas.height;
-
-    mouseX1 = handBuffer.mouseX/pixelX
-    mouseY1 =  handBuffer.mouseY/pixelY
-
-    if (btoa(segments[drawNumber]).length >= 1900) {
-        finishDrawing()
-        drawn = true;
-        drawPolygons()
-    }
-
+function mouseDragged() {
     if (!drawn) {
         if (mouseIsPressed) {
             loaded = 4;
             // WHILE CLICKED - Store values in Array
             let distance = int(dist(mouseX1,mouseY1,start.x,start.y))
-            if (distance >= 100) {
+
+            let res = 100;
+            if(!drawn && drawMode !== "Imitation") { res = 25 }
+
+            if (distance >= res) {
                 console.log("Drawing")
                 let angle = int(atan(-(mouseY1-start.y)/(mouseX1-start.x)))
                 if ((mouseX1-start.x) < 0) {angle += 180;}
@@ -91,7 +80,20 @@ function createDoodle()
             }
         }
     }
+}
 
+function checkDrawing()
+ {
+    pixelX = newW/canvas.width;
+    pixelY = newH/canvas.height;
+    mouseX1 = handBuffer.mouseX/pixelX
+    mouseY1 =  handBuffer.mouseY/pixelY
+
+    if (!drawn && btoa(segments[drawNumber]).length >= 1900) {
+        finishDrawing()
+        drawn = true;
+        showHatch()
+    }
     if (drawNumber >= maxDrawings) {
         drawn = true;
     }
@@ -113,7 +115,7 @@ function finishDrawing () {
         for (let i = 1; i < segments[drawNumber].length - 1; i++) {
             mousePlot.addSegment(segments[drawNumber][i][0],segments[drawNumber][i][1])
         }
-        mousePlot.endPlot(segments[drawNumber][segments[drawNumber].length-1])
+        mousePlot.endPlot(segments[drawNumber][segments[drawNumber].length-1][0])
 
         // Push Plot
         mousePlots.push([mousePlot,origin])
@@ -123,11 +125,11 @@ function finishDrawing () {
         drawing = false;
 
         // Copy Contents to Clipboard
-        copyToClipboard(btoa(segments))
+        copyToClipboard("drawn" + btoa(segments))
 
         // Show Result
         if (drawNumber == maxDrawings) {
-            drawPolygons()
+            showHatch()
         }
     }
 }
@@ -148,6 +150,7 @@ let hand = function(p) {
         handBuffer.id('mano');
     };
     p.draw = function() {
+        pixel = newW/canvas.width;
         if (drawing) {
             p.strokeWeight(2)
             p.stroke(pickedColors[2])
@@ -155,6 +158,15 @@ let hand = function(p) {
         }
         else if (drawn) {
             p.clear();
+        }
+        if(!drawn && drawMode == "Repetition") {
+            p.push();
+            p.noFill()
+            p.stroke(255,0,0)
+            p.strokeWeight(10*pixel)
+            p.rectMode(p.CORNERS);
+            p.rect(w1*pixel,h1*pixel,w1*pixel+(w2-w1)/tileNr*pixel,h1*pixel+(h2-h1)/tileNr*pixel)
+            p.pop();
         }
     };
 };
