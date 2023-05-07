@@ -18,11 +18,11 @@ body {
 }
 
 #carga {
-  position: absolute; z-index: 1; margin: auto; top: 0; left: 0; bottom: 0; right: 0; background-color: transparent;
+  position: absolute; z-index: 2; margin: auto; top: 0; left: 0; bottom: 0; right: 0; background-color: transparent;
 }
 
 #mano {
-  position: absolute; z-index: 2; margin: auto; top: 0; left: 0; bottom: 0; right: 0; background-color: transparent;
+  position: absolute; z-index: 1; margin: auto; top: 0; left: 0; bottom: 0; right: 0; background-color: transparent;
 }
 
 #principal {

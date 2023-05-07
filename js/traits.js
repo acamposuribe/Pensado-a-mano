@@ -78,7 +78,7 @@ switch (hatchMode) {
         break; 
     case "Spectrum":
         isDeep = true;
-        if (drawMode = "Repetition" && rand(0,1) < 0.5) {
+        if (drawMode == "Repetition" && rand(0,1) < 0.5) {
             isDeep = false;
         }
         break; 
