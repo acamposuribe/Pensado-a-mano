@@ -78,11 +78,6 @@ let sketch = function(p) {
                 p.fill(pickedColors[1]);
                 p.text(message3,0,0);
             }
-            let message5 = "START"
-            p.fill(pickedColors[2]);
-            p.rect(0,0,p.textWidth(message3)+25*pixel*mult,70*pixel*mult)
-            p.fill(pickedColors[1]);
-            p.text(message5,0,0);
             p.pop();
 
             mult = 0.68;

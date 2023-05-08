@@ -1,16 +1,16 @@
 // COLOR PALETTES
 let palette = parseInt(weightedRand({
-    0: 60,     // Blac Ivoire
-    1: 90,    // Outremer Gris
-    2: 30,     // Gris Clair
-    3: 50,     // Le Rubis
+    0: 30,     // Blac Ivoire
+    1: 60,    // Outremer Gris
+    2: 10,     // Gris Clair
+    3: 20,     // Le Rubis
 }));
 const colors = [
-    // Nombre,                  color1,     color2,          color3,        color4,         color5,         color6,        color7 
-    ["Blanc Ivoire",            "#fffceb",  "#2c695a",      "#4ad6af",      "#7facc6",      "#4e93cc",      "#f6684f",      "#ffd300"],
-    ["Outremer Gris",           "#e2e7dc",  "#7b4800",      "#002185",      "#003c32",      "#fcd300",      "#ff2702",      "#6b9404"],
-    ["Gris Clair",              "#ccccc6",  "#474238",      "#f4bd48",      "#9c2128",      "#395a8e",      "#7facc6",      "#2c695a"],   
-    ["Le Rubis",                "#ffe6d4",  "#6c2b3b",      "#c76282",      "#445e87",      "#003c32",      "#e0b411",      "#c8491b"],
+    // Nombre,                  color1,     color2,          color3,        color4,         color5,         color6,        color7       drawMode8
+    ["Blanc Ivoire",            "#fffceb",  "#2c695a",      "#4ad6af",      "#7facc6",      "#4e93cc",      "#f6684f",      "#ffd300",  2],
+    ["Outremer Gris",           "#e2e7dc",  "#7b4800",      "#002185",      "#003c32",      "#fcd300",      "#ff2702",      "#6b9404",  0],
+    ["Gris Clair",              "#ccccc6",  "#474238",      "#f4bd48",      "#9c2128",      "#395a8e",      "#7facc6",      "#2c695a",  3],   
+    ["Le Rubis",                "#ffe6d4",  "#6c2b3b",      "#c76282",      "#445e87",      "#003c32",      "#e0b411",      "#c8491b",  1],
 ];
 let gridColor = colors[palette][2];
 const pickedColors = colors[palette]
@@ -45,12 +45,8 @@ const drawModes = [
     ["Learning",30,[50,0,0,30]],
     ["Rotation",10,[50,0,0,50]],
 ]
-let drawSel = parseInt(weightedRand({
-    0: drawModes[0][1],
-    1: drawModes[1][1],
-    2: drawModes[2][1],
-    3: drawModes[3][1],
-}))
+// DrawMode and Palettes are connected
+let drawSel = pickedColors[8]
 let drawMode = drawModes[drawSel][0]
 const tileNr = rande(2,4);
 const dNr = rande(3,7);
