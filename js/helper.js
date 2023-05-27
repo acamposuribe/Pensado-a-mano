@@ -1,3 +1,30 @@
+let randomTest = rande(1,99)
+
+// DEFINE PARAMS
+$fx.params([
+    {
+        id: "seed_rand",
+        name: "Seed nr.",
+        type: "number",
+        default: randomTest,
+        options: {
+          min: 1,
+          max: 99,
+          step: 1,
+        },
+      },
+    {
+      id: "draw_string",
+      name: "PASTE CLIPBOARD HERE",
+      type: "string",
+      default: "false",
+      options: {
+        minLength: 300,
+        maxLength: 1900,
+      },
+    },
+  ])
+
 // CANVAS SIZE and MARGINS
     
     // Standard PixelDensity
@@ -21,15 +48,20 @@
 let svg_final;
 let svgBuffers = [];
 
+// PARAMS FIX
+for (let i = 0; i < $fx.getParam("seed_rand"); i++) {
+    $fx.randminter()
+}
+
 // AUXILIARY RAND FUNCTIONS
-function rand(e, r) {return mapRange($fx.rand(), 0, 1, e, r)}
-function rande(e, r) {return Math.floor(mapRange($fx.rand(), 0, 1, e, r))}
+function rand(e, r) {return mapRange($fx.randminter(), 0, 1, e, r)}
+function rande(e, r) {return Math.floor(mapRange($fx.randminter(), 0, 1, e, r))}
 function weightedRand(e) {
     var r, a, n = [];
     for (r in e)
         for (a = 0; a < 10 * e[r]; a++)
             n.push(r);
-        return n[Math.floor($fx.rand() * n.length)]
+        return n[Math.floor($fx.randminter() * n.length)]
 }
 function mapRange (value, a, b, c, d) {
     value = (value - a) / (b - a);

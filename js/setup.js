@@ -3,23 +3,9 @@
 
 let seed = rand(0,1);
 
-// DEFINE PARAMS
-$fx.params([
-    {
-      id: "draw_string",
-      name: "PASTE CLIPBOARD HERE",
-      type: "string",
-      default: "false",
-      options: {
-        minLength: 300,
-        maxLength: 2000,
-      },
-    },
-  ])
-
 function setup () {
         // CANVAS AND SEEDS
-        mainCanvas = createCanvas(canvas.width, canvas.height); angleMode(DEGREES), rectMode(CENTER), noiseSeed($fx.rand() * 999999); pixelDensity(pDensity), randomSeed($fx.rand()*99999);
+        mainCanvas = createCanvas(canvas.width, canvas.height); angleMode(DEGREES), rectMode(CENTER), noiseSeed($fx.randminter() * 999999); pixelDensity(pDensity), randomSeed($fx.randminter()*99999);
         // CANVAS TEXTURE BUFFER for Firefox Bug
         if (firefoxAgent) {
             canvas_texture = createGraphics(canvas.width, canvas.height);
@@ -44,21 +30,35 @@ function setup () {
         checkSegments();
 
         // INITIALISE GLOBAL BRUSHES
-        gridLines = new LineStyle("2B"), borderLines = new LineStyle("HB");
-        thinLines = new LineStyle("HB")
+        gridLines = new LineStyle(brushName)
+        borderLines = new LineStyle("HB");
+        thinLines = new LineStyle("HB");
 
         // DRAW BORDER
         drawBorder();
-
-        // DRAW HATCHES IF EXISTING
-        if (drawn) {
-            showHatch()
-        }
 }
 
 function draw () {  
-    if (firefoxAgent) {canvas_texture.image(lienzo,0,0);}
+    frameRate(10)
+    // COPY SEVERAL TIMES TO AVOID BUG
+    if (copy < 10) {
+        copyToClipboard("drawn" + btoa(segments))
+        if (copy == 9) {show = true}
+        copy++
+    }
+    // SHOW DRAWING
+    if (drawn && show) {
+        showHatch()
+        show = false
+        finished = true;
+    }
+    // PREVIEW
+    if (finished) {
+        $fx.preview()
+        noLoop();
+    }
     checkDrawing()
+    if (firefoxAgent) {canvas_texture.image(mainCanvas,0,0);}
 }
 
 function drawBorder() {
@@ -200,5 +200,8 @@ function showHatch () {
         }
         // Save SVG
         save(svg_final,"fx(drawn)-" + $fx.hash)
+    } else if (keyCode === 67) {
+        copyToClipboard("drawn" + btoa(segments))
     }
+    return false;
 }

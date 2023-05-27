@@ -1,19 +1,33 @@
 // COLOR PALETTES
 let palette = parseInt(weightedRand({
     0: 30,     // Blac Ivoire
-    1: 60,    // Outremer Gris
-    2: 10,     // Gris Clair
-    3: 20,     // Le Rubis
+    1: 60,      // Outremer Gris
+    2: 30,     // Duende
+    3: 30,     // Le Rubis
 }));
 const colors = [
     // Nombre,                  color1,     color2,          color3,        color4,         color5,         color6,        color7       drawMode8
-    ["Blanc Ivoire",            "#fffceb",  "#2c695a",      "#4ad6af",      "#7facc6",      "#4e93cc",      "#f6684f",      "#ffd300",  2],
-    ["Outremer Gris",           "#e2e7dc",  "#7b4800",      "#002185",      "#003c32",      "#fcd300",      "#ff2702",      "#6b9404",  0],
-    ["Gris Clair",              "#ccccc6",  "#474238",      "#f4bd48",      "#9c2128",      "#395a8e",      "#7facc6",      "#2c695a",  3],   
-    ["Le Rubis",                "#ffe6d4",  "#6c2b3b",      "#c76282",      "#445e87",      "#003c32",      "#e0b411",      "#c8491b",  1],
+    ["Cirque",                  "#fffceb",  "#2c695a",      "#4ad6af",      "#7facc6",      "#4e93cc",      "#f6684f",      "#ffd300",  2], // Learning
+    ["Enfantines",              "#e2e7dc",  "#7b4800",      "#002185",      "#003c32",      "#fcd300",      "#ff2702",      "#6b9404",  0], // Imitation
+    ["Duende",                  "#f5f3e9",  "#473b2b",      "#7f90bc",      "#d94129",      "#fcd300",      "#262521",      "#faf8eb",  3], // Rotation
+    ["Sans Lunettes",           "#ffe6d4",  "#6c2b3b",      "#c76282",      "#445e87",      "#003c32",      "#e0b411",      "#c8491b",  1], // Repetition (tile)
 ];
 let gridColor = colors[palette][2];
 const pickedColors = colors[palette]
+
+// BRUSH
+const brushNames = [
+    ["charcoal", 35],
+    ["cpencil", 15],
+    ["pen", 30],
+    ["2B", 15]
+]
+let brushName = brushNames[parseInt(weightedRand({
+    0: brushNames[0][1],
+    1: brushNames[1][1],
+    2: brushNames[2][1],
+    3: brushNames[3][1],
+}))][0];
 
 // FLOW FIELD SELECTION
 const ffTypes = [
@@ -45,6 +59,16 @@ const drawModes = [
     ["Learning",30,[50,0,0,30]],
     ["Rotation",10,[50,0,0,50]],
 ]
+if (brushName == "charcoal") {
+    drawModes[0][2][0] = 15
+    drawModes[0][2][3] = 50
+
+    drawModes[1][2][3] = 70
+
+    drawModes[2][2][3] = 70
+
+    drawModes[3][2][3] = 70
+}
 // DrawMode and Palettes are connected
 let drawSel = pickedColors[8]
 let drawMode = drawModes[drawSel][0]
@@ -106,7 +130,6 @@ switch(drawMode) {
 
 // DEFINE FEATURES
 $fx.features({
-    'Mood': ffType,
-    'Phase': drawMode,
-    'Hatch': hatchMode,
+    'Type': drawMode,
+    'Brush': brushName,
 })
