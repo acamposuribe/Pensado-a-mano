@@ -287,15 +287,15 @@ function keyReleased() {
         save(C.main, "Pensado_a_mano-" + $fx.hash, 'png');
     // Save Plot with "P"
     } else if (keyCode === 80) {
-        for (let g of SVG.buffers) {
+        for (let g of S.buffers) {
             let layerBuffer = createGraphics(C.width, C.height,SVG);
             for (let b of g) {
                 layerBuffer.image(b,0,0)
             }
-            SVG.final.image(layerBuffer,0,0)
+            S.final.image(layerBuffer,0,0)
         }
         // Save SVG
-        save(SVG.final,"Pensado_a_mano-" + $fx.hash)
+        save(S.final,"Pensado_a_mano-" + $fx.hash)
     }
     return null;
 }
@@ -321,7 +321,7 @@ function setup () {
     C.loadingBuffer = new p5(loadingBuffer)
 
     // SVG STUFF
-    SVG.final = createGraphics(C.width,C.height,SVG);
+    S.final = createGraphics(C.width,C.height,SVG);
 
     // Helps my brain
     angleMode(DEGREES)

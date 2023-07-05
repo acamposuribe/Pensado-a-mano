@@ -234,7 +234,7 @@ class LineStyle {
             this.buffers[m].strokeWeight(this.params[0])
             this.buffers[m].noFill()
         }
-        SVG.buffers.push(this.buffers)
+        S.buffers.push(this.buffers)
     }
     limite(x,y) {
         if (this.limit) return x >= C.w1 && x <= C.w2 && y >= C.h1 && y <= C.h2;
