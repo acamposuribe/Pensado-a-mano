@@ -1,34 +1,54 @@
 html, body {
-  height: 100%;
-}
-
+    height: 100%;
+  }
+  
 body {
+    /* leave it to hide the scrollbars */
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    display: flex;
 
-  /* leave it to hide the scrollbars */
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
-  display: flex;
+    /* This centers our sketch horizontally. */
+    justify-content: center;
 
-  /* This centers our sketch horizontally. */
-  justify-content: center;
-
-  /* This centers our sketch vertically. */
-  align-items: center;
+    /* This centers our sketch vertically. */
+    align-items: center;
 }
+  
+  #mainCanvas {
+    position: absolute; 
+    z-index: 0; 
+    margin: auto; 
+    top: 0; 
+    left: 0; 
+    bottom: 0; 
+    right: 0; 
+    background-color: transparent;
+  }
+  
+  #drawingCanvas {
+    position: absolute; 
+    z-index: 1; 
+    margin: auto; 
+    top: 0; 
+    left: 0; 
+    bottom: 0; 
+    right: 0; 
+    background-color: transparent;
+  }
 
-#carga {
-  position: absolute; z-index: 1; margin: auto; top: 0; left: 0; bottom: 0; right: 0; background-color: transparent;
-}
-
-#mano {
-  position: absolute; z-index: 2; margin: auto; top: 0; left: 0; bottom: 0; right: 0; background-color: transparent;
-}
-
-#principal {
-  position: absolute; z-index: 0; top: 0; left: 0; bottom: 0; right: 0; margin: auto; opacity: 0;
-}
-
-#p5_loading {
-  display:none;
-}
+  #loadingCanvas {
+    position: absolute; 
+    z-index: 2; 
+    margin: auto; 
+    top: 0; 
+    left: 0; 
+    bottom: 0; 
+    right: 0; 
+    background-color: transparent;
+  }
+  
+  #p5_loading {
+    display:none;
+  }
