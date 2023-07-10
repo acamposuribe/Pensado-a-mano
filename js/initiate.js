@@ -49,3 +49,9 @@ const C = {
         randomSeed(R.rand()*1221)
     }
 };
+
+//////////////////////////////////////////////////
+// SVG Things
+const S = {
+    buffers: []
+}

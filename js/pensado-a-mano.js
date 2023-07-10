@@ -33,7 +33,7 @@ document.title = "Pensado a mano #" + $fx.iteration;
 //////////////////////////////////////////////////
 // SET CANVAS SIZE
 // width, height, pixelDensity, margins %s and probability
-C.setSize(2100,2600,1.5,{0.07: 30, 0.12: 30, 0: 10});
+C.setSize(2100,2600,1.5,{0.07: 30, 0.12: 30});
 
 //////////////////////////////////////////////////
 // SVG Things
