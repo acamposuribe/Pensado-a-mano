@@ -36,13 +36,6 @@ document.title = "Pensado a mano #" + $fx.iteration;
 C.setSize(2100,2600,1.5,{0.07: 30, 0.12: 30});
 
 //////////////////////////////////////////////////
-// SVG Things
-const SVG = {
-    final: null,
-    buffers: [],
-}
-
-//////////////////////////////////////////////////
 // PROJECT TRAITS
 const T = {
     // PICK FUNCTION
