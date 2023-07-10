@@ -33,7 +33,7 @@ document.title = "Pensado a mano #" + $fx.iteration;
 //////////////////////////////////////////////////
 // SET CANVAS SIZE
 // width, height, pixelDensity, margins %s and probability
-C.setSize(2100,2600,1.5,{0.07: 30, 0.12: 30});
+C.setSize(2100,2600,1,{0.07: 30, 0.12: 30});
 
 //////////////////////////////////////////////////
 // PROJECT TRAITS
@@ -91,7 +91,7 @@ const T = {
         ["Imitation",[60,20,15]],
         ["Repetition",[50,0,50]],
         ["Learning",[50,0,0]],
-        ["Rotation",[50,0,50]],
+        ["Rotation",[50,0,20]],
     ],
     pickDM() {
         this.drawSel = this.pickedColors[8]
@@ -183,26 +183,23 @@ const loadingBuffer = function(p) {
         p.textFont("Courier"), p.noStroke(), p.rectMode(p.CENTER);
     };
     p.draw = function() {
-        p.clear(), p.frameRate(20)
-        p.textSize(10/C.fitMult)
+        p.clear(), p.textSize(10/C.fitMult), p.textAlign(p.CENTER,p.CENTER);
         if ($fx.context === "minting") {
             p.push();
-            p.textAlign(p.CENTER,p.CENTER);
             p.translate(p.width/2,p.height/2)
             if (Sketch.isAboveLimit) {
                 p.fill(0)
                 p.text("RELEASE!",0,0);
             }
             if (Sketch.generating) {
-                p.fill(T.pickedColors[2]);
-                p.rect(0,0,p.textWidth(message5)+50*C.fitMult,140*C.fitMult)
-                p.fill(T.pickedColors[1]);
-                p.text(message5,0,0);
+                p.fill(T.pickedColors[2]), p.rect(0,0,p.textWidth(message5)+50*C.fitMult,140*C.fitMult)
+                p.fill(T.pickedColors[1]), p.text(message5,0,0);
             }
             p.pop();
+
             if (!Sketch.isDrawn && !Sketch.isDrawing) {
-                p.textSize(40*C.fitMult)
                 p.push();
+                p.textSize(40*C.fitMult)
                 p.textAlign(p.LEFT,p.CENTER);
                 p.fill(T.pickedColors[2]);
                 p.rect( (C.w1+40) * C.fitMult + (p.textWidth(message)+15*C.fitMult)/2,  (C.h2-90) * C.fitMult,p.textWidth(message)+30*C.fitMult,40*C.fitMult)
@@ -231,20 +228,13 @@ const loadingBuffer = function(p) {
                         p.line(p.width/2,p.height/2,p.width/2+dist*cos(-90),p.height/2+dist*sin(-90))
                         p.line(p.width/2,p.height/2,p.width/2+dist*cos(-90-360/T.polarNr),p.height/2+dist*sin(-90-360/T.polarNr))
                     break;
-                    case "Imitation":
-                        
-                    break;
                 }
                 p.pop();
             }
+  
         } else if (!C.loaded) {
-            p.push();
-            p.textAlign(p.CENTER,p.CENTER);
-            p.translate(p.width/2,p.height/2)
-            p.fill(0)
-            p.text("Loading...",0,0);
-            p.pop();
-        }
+            p.push(), p.translate(p.width/2,p.height/2), p.fill(0), p.text("Loading...",0,0), p.pop();
+        } else if (C.loaded) {p.noLoop()}
     };
     p.windowResized = function() {
         p.resizeCanvas(floor(C.fitWidth), floor(C.fitHeight));
@@ -334,16 +324,13 @@ function setup () {
 }
 
 function draw() {
-
     // If drawing data already exists, we decode it
     Sketch.decodeDrawing()
 
     // If Sketch data exists, show the drawing
-    if (Sketch.isDrawn) {
-        C.loaded = true;
-        Mano.show();
-        $fx.preview()
-        noLoop();
+    if (Sketch.generating) Sketch.nn++
+    if (($fx.context == "minting" && Sketch.isDrawn && Sketch.nn > 1) || ($fx.context !== "minting" && Sketch.isDrawn)) {
+        Sketch.generating = false, Mano.show(), $fx.preview(), C.loaded = true, noLoop();
     }
 }
 
@@ -361,6 +348,7 @@ const B = {
 //////////////////////////////////////////////////
 // THIS IS WHERE WE CREATE AND DECODE WITH HAND-DRAWING DATA
 const Sketch = {
+    nn: 0,
     isDrawn: false,
     isDrawing: false,
     isAboveLimit: false,
@@ -430,6 +418,7 @@ const Sketch = {
         // If number of max nr. of doodles has been reached, finish capturing
         if (this.currentDoodle >= this.maxDoodles || this.aboveLimit) {
             this.isDrawn = true;
+            Sketch.generating = true;
             this.isAboveLimit = false;
             $fx.emit("params:update", {
                 draw_string: this.encodedData.toString(),
